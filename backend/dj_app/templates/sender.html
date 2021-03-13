@@ -10,8 +10,17 @@
     </head>
 
     <body>
-        <div id="root"> Hello World </div>
-        <button id="connectButton"> Connect  </button>
+        <h1>Sender page</h1>
+
+        <p>
+            <video autoplay="true" width="200" id="myVideo"></video>
+            <button id="getMedia">Get user media</button>
+        </p>
+
         <script src="/static/dist/index.js"></script>
+        <script>
+            window.myapp.initapp('Dima');
+        </script>
+
     </body>
 </html>

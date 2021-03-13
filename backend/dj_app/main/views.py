@@ -1,5 +1,8 @@
 from django.shortcuts import render
 
 # Create your views here.
-def index(request):
-    return render(request,'index.html')
+def sender(request):
+    return render(request,'sender.html')
+
+def reciever(request):
+    return render(request,'reciever.html')

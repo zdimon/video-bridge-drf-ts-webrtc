@@ -1,9 +1,5 @@
-// import $ from "jquery";
+import App from './App';
+var myapp = new App();
+(window as any).myapp = myapp;
 
-import  io  from "socket.io-client";
 
-$('#my').html('Hello from jQuery');
-$('#connectButton').on('click', () => {
-    const socket = io('http://localhost:5001', {transports:['websocket']});
-});
-console.log($)
