@@ -4,3 +4,4 @@ eventlet
 redis
 djangorestframework
 drf-yasg
+celery

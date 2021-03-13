@@ -9,7 +9,14 @@ export default class SocketConnection {
             console.log('Connection was established');
             window.sessionStorage.setItem('sid',socket.id);
             socket.emit('login',{login});
-        })        
+        })    
+        
+        socket.on('calling', (msg) => {
+            $('#responseBox').show();
+            $('#callerName').html(msg.login);
+            console.log(msg);
+        });
+
     }
 
 }

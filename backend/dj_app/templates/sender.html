@@ -12,14 +12,21 @@
     <body>
         <h1>Sender page</h1>
 
-        <p>
-            <video autoplay="true" width="200" id="myVideo"></video>
+        <div id="responseBox" style="display: none">
+            <h1 id="callerName"><h1>
+            <button>Accept</button>
+        </div>
+
+        <p id="responseBox" style="displ">
+
+            <video autoplay="true" width="200" id="myVideo" style="border: 1px solid red"></video>
             <button id="getMedia">Get user media</button>
         </p>
 
         <script src="/static/dist/index.js"></script>
         <script>
-            window.myapp.initapp('Dima');
+            window.myapp.initappSender('woman');
+            
         </script>
 
     </body>
