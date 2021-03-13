@@ -1,0 +1,4 @@
+Django
+python-socketio
+eventlet
+redis

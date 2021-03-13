@@ -1,0 +1,6 @@
+node_modules
+dist
+venv
+backend/dj_app/static
+__pycache__
+backend/dj_app/db.sqlite3
