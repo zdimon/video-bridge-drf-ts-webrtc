@@ -11,8 +11,9 @@
 }
 
 #senderCam {
-    position: absolute;
+    position: fixed;
     top: 60px;
+    left: 60px;
     height: 250px;
     background-color: #C30760;
 }
