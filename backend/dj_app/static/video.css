@@ -17,3 +17,7 @@
     height: 250px;
     background-color: #C30760;
 }
+
+#recieverLogin {
+    display: none;
+}
