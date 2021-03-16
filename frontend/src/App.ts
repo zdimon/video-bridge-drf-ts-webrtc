@@ -37,8 +37,8 @@ export default class App {
                 <input type="text" id="recieverLogin" value="${msg.login}">
                 <video autoplay="true" width="200" id="myVideo" style="border: 1px solid red"></video>  
                 <div style="text-align: center">              
-                <a class="btn id="acceptOffer">Accept</a>
-                <a class="btn id="declineOffer">Decline</a>
+                <a class="btn" id="acceptOffer">Accept</a>
+                <a class="btn" id="declineOffer">Decline</a>
                 </div>
             </div>`;
             $('#senderCam').html(tpl);
