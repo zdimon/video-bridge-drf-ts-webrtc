@@ -32,8 +32,8 @@
 }
 
 #callerName {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     color: #C30760;
-    
+    margin: 10px;
 }
