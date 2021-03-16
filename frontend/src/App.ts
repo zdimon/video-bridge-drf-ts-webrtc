@@ -34,6 +34,7 @@ export default class App {
 
             const tpl = `<div id="responseBox">
                 <h1 id="callerName">${msg.login} is calling you!<h1>
+                <input type="text" id="recieverLogin" value="${msg.login}">
                 <video autoplay="true" width="200" id="myVideo" style="border: 1px solid red"></video>                
                 <button id="acceptOffer">Accept</button>
                 <button id="declineOffer">Decline</button>
@@ -41,7 +42,7 @@ export default class App {
             $('#senderCam').html(tpl);
             $('#acceptOffer').on('click', (e) => {
                 this.attachVideo();
-                this.pcon.offer(this.tracks,this.stream,this.username);
+                this.pcon.offer(this.tracks,this.stream);
             })  
         });
 

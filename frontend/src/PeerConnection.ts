@@ -67,7 +67,7 @@ export class PeerConnection {
         }
     }
 
-    async offer(tracks: any, localStream: any, reciever_login: string) {
+    async offer(tracks: any, localStream: any) {
 
         const offerOptions = {
             offerToReceiveAudio: 0,
@@ -90,7 +90,7 @@ export class PeerConnection {
             data: JSON.stringify({
                 'sid': window.sessionStorage.getItem('sid'),
                 'offer': JSON.stringify(offer),
-                'reciever_login': reciever_login,
+                'reciever_login': $('#recieverLogin').val(),
                 'type': 'sender'
             }),
                 success: (data) => {
