@@ -1,7 +1,7 @@
 node_modules
 dist
 venv
-backend/dj_app/static
+backend/dj_app/static/dist
 __pycache__
 backend/dj_app/db.sqlite3
 frontend/src/config.ts
