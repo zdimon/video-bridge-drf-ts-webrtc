@@ -15,7 +15,8 @@
     top: 60px;
     left: 60px;
     height: 250px;
-    background-color: #C30760;
+    background-color:white;
+    border-radius: 10px;
     z-index: 100;
 }
 

@@ -35,9 +35,11 @@ export default class App {
             const tpl = `<div id="responseBox">
                 <h1 id="callerName">${msg.login} is calling you!<h1>
                 <input type="text" id="recieverLogin" value="${msg.login}">
-                <video autoplay="true" width="200" id="myVideo" style="border: 1px solid red"></video>                
-                <button id="acceptOffer">Accept</button>
-                <button id="declineOffer">Decline</button>
+                <video autoplay="true" width="200" id="myVideo" style="border: 1px solid red"></video>  
+                <div style="text-align: center">              
+                <a class="btn id="acceptOffer">Accept</a>
+                <a class="btn id="declineOffer">Decline</a>
+                </div>
             </div>`;
             $('#senderCam').html(tpl);
             $('#acceptOffer').on('click', (e) => {
