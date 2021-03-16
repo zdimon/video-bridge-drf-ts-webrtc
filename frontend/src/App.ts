@@ -94,6 +94,7 @@ export default class App {
             $('#recieverCam').html(tpl);
             this.videotag = document.querySelector('#myVideo');
             console.log(this.videotag);
+            console.log(e.streams);
             this.videotag.srcObject = e.streams[0];
         })
 
