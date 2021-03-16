@@ -35,7 +35,7 @@ export default class App {
             const tpl = `<div id="responseBox">
                 <h1 id="callerName">${msg.login} is calling you!<h1>
                 <input type="text" id="recieverLogin" value="${msg.login}">
-                <video autoplay="true" width="200" id="myVideo" style="border: 1px solid red"></video>  
+                <video autoplay="true" width="200" id="myVideo"></video>  
                 <div style="text-align: center">              
                 <a class="btn" id="acceptOffer">Accept</a>
                 <a class="btn" id="declineOffer">Decline</a>
@@ -92,7 +92,7 @@ export default class App {
         this.pcon.rtcConnection.addEventListener('track', (e) => {
             console.log('We have got the video!!!');
             // console.log(e);
-            const tpl = `<video autoplay="true" width="200" id="myVideo" style="border: 1px solid red"></video>`
+            const tpl = `<video autoplay="true" width="200" id="myVideo" ></video>`
             $('#recieverCam').html(tpl);
             this.videotag = document.querySelector('#myVideo');
             console.log(this.videotag);
