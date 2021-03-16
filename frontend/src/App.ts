@@ -36,7 +36,7 @@ export default class App {
                 <button id="acceptOffer">Accept</button>
                 <button id="declineOffer">Decline</button>
             </div>`;
-            $('#recieverCam').html(tpl);
+            $('#senderCam').html(tpl);
             $('#acceptOffer').on('click', (e) => {
                 this.attachVideo();
                 this.pcon.offer(this.tracks,this.stream);
