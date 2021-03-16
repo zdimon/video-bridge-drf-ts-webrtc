@@ -1,0 +1,4 @@
+export const config = {
+    serverURL: 'http://localhost:8888/',
+    socketURL: 'http://localhost:5001/'
+}
