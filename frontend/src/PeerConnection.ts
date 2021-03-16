@@ -7,7 +7,11 @@ export class PeerConnection {
     rtcConnection: any;
 
     constructor() {
-        this.rtcConnection = new RTCPeerConnection(null);
+        this.rtcConnection = new RTCPeerConnection(
+            {
+                iceServers: config.stun_servers
+            }
+        );
         this.rtcConnection.addEventListener('icecandidate', (e) => { this.onIceCandidate(e) })
     }
 

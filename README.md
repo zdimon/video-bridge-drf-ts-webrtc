@@ -23,6 +23,8 @@
 
 ## Запуск фронтенда
 
+     cp frontend/src/config.ts.template frontend/src/config.ts
+
     cd frontend
     npm install
     npm run build
