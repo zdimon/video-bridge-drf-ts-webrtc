@@ -11,17 +11,15 @@ export default class App {
     stream: any;
     videotag: any;
 
+    
+
     async initappSender(username: string) {
         this.scon = new SocketConnection();
         this.scon.connect(username);
         this.pcon = new PeerConnection();
         this.stream = await this.pcon.getmedia();
                
-        $('#SendOffer').on('click', (e) => {
-            this.attachVideo();
-            // console.log(this.tracks);
-            this.pcon.offer(this.tracks,this.stream);
-        })  
+
 
         this.scon.socket.on('reciever_answer', async (msg) => {
             // console.log('Answer from reciever');
@@ -29,6 +27,21 @@ export default class App {
             this.pcon.rtcConnection.setRemoteDescription(JSON.parse(msg.reciever_answer));
             // console.log(this.pcon);
         })
+
+        this.scon.socket.on('calling', (msg) => {
+
+            const tpl = `<div id="responseBox">
+                <h1 id="callerName">${msg.login} is calling you!<h1>
+                <video autoplay="true" width="200" id="myVideo" style="border: 1px solid red"></video>                
+                <button id="acceptOffer">Accept</button>
+                <button id="declineOffer">Decline</button>
+            </div>`;
+            $('#recieverCam').html(tpl);
+            $('#acceptOffer').on('click', (e) => {
+                this.attachVideo();
+                this.pcon.offer(this.tracks,this.stream);
+            })  
+        });
 
         this.scon.socket.on('ice_candidate', async (msg) => {
            await this.pcon.addIceCandidate(msg.ice);
@@ -40,7 +53,7 @@ export default class App {
         this.scon = new SocketConnection();
         this.scon.connect(username);
         this.pcon = new PeerConnection();
-        $('#callButton').on('click', (e) => {
+        $('#VideoCall').on('click', (e) => {
             this.callUser();
         })
         this.scon.socket.on('sender_offer', async (msg) => {
@@ -74,7 +87,10 @@ export default class App {
         this.pcon.rtcConnection.addEventListener('track', (e) => {
             console.log('We have got the video!!!');
             // console.log(e);
+            const tpl = `<video autoplay="true" width="200" id="myVideo" style="border: 1px solid red"></video>`
+            $('#recieverCam').html(tpl);
             this.videotag = document.querySelector('#myVideo');
+            console.log(this.videotag);
             this.videotag.srcObject = e.streams[0];
         })
 
@@ -88,12 +104,13 @@ export default class App {
 
     callUser() {
         const url = `${config.serverURL}call`;
+        const username =  $('#VideoCall').attr( "data-username" );
         // console.log(url);
         $.ajax({
             url: url,
             type: "POST",
             data: JSON.stringify({
-                login: $('#CallUsername').val(),
+                login: username,
                 sid: window.sessionStorage.getItem('sid')
             }),
             contentType: "application/json",

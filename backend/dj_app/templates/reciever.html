@@ -12,9 +12,11 @@
     <body>
         <h1>Reciever page</h1>
         <script src="/static/dist/index.js"></script>
-            <input type="text" id="CallUsername" value="woman"/>
-            <video autoplay="true" width="200" id="myVideo" style="border: 1px solid red"></video>
-            <button value="woman" id="callButton">Calling</button>
+            
+            
+            <div id="recieverCam"></div>
+            <button data-username="woman"  id="VideoCall" >Call to woman</button>
+
         <script>
             window.myapp.initappReciever('man');
         </script>
