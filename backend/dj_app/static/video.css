@@ -1,8 +1,13 @@
 #recieverCam {
     position: fixed;
-    top: 60px;
+    top: 10px;
     height: 250px;
     background-color: #C30760;
+}
+
+#myVideo {
+    width: 200px;
+    height: 150px;
 }
 
 #senderCam {
