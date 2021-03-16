@@ -10,10 +10,12 @@ export default class App {
     tracks: any;
     stream: any;
     videotag: any;
+    username: string;
 
     
 
     async initappSender(username: string) {
+        this.username = username;
         this.scon = new SocketConnection();
         this.scon.connect(username);
         this.pcon = new PeerConnection();
@@ -39,7 +41,7 @@ export default class App {
             $('#senderCam').html(tpl);
             $('#acceptOffer').on('click', (e) => {
                 this.attachVideo();
-                this.pcon.offer(this.tracks,this.stream);
+                this.pcon.offer(this.tracks,this.stream,this.username);
             })  
         });
 
