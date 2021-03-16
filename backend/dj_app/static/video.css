@@ -4,3 +4,10 @@
     height: 250px;
     background-color: #C30760;
 }
+
+#senderCam {
+    position: fixed;
+    top: 60px;
+    height: 250px;
+    background-color: #C30760;
+}
