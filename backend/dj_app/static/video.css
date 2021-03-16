@@ -1,8 +1,9 @@
 #recieverCam {
     position: absolute;
     top: 10px;
-    height: 250px;
-    background-color: #C30760;
+    height: 220px;
+    background-color:white;
+    border-radius: 10px;
 }
 
 #myVideo {
