@@ -5,3 +5,4 @@ redis
 djangorestframework
 drf-yasg
 celery
+django-cors-headers
