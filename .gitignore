@@ -4,3 +4,4 @@ venv
 backend/dj_app/static
 __pycache__
 backend/dj_app/db.sqlite3
+frontend/src/config.ts
