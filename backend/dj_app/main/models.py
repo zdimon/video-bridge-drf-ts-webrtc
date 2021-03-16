@@ -5,7 +5,8 @@ from django.utils.translation import gettext as _
 class UserProfile(models.Model):
     login = models.CharField(max_length=80,unique=True, verbose_name=_('Name'))
     is_online = models.BooleanField(default=False)
-
+    def __str__(self) -> str:
+        return self.login
 
 class UserConnection(models.Model):
     sid = models.CharField(max_length=250,unique=True, verbose_name=_('SID'))

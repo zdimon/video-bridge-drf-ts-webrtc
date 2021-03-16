@@ -16,9 +16,23 @@ export default class App {
         this.scon.connect(username);
         this.pcon = new PeerConnection();
         this.stream = await this.pcon.getmedia();
-        $('#responseBox').on('click', (e) => {
+               
+        $('#SendOffer').on('click', (e) => {
             this.attachVideo();
-        })        
+            // console.log(this.tracks);
+            this.pcon.offer(this.tracks,this.stream);
+        })  
+
+        this.scon.socket.on('reciever_answer', async (msg) => {
+            // console.log('Answer from reciever');
+            // console.log(msg);
+            this.pcon.rtcConnection.setRemoteDescription(JSON.parse(msg.reciever_answer));
+            // console.log(this.pcon);
+        })
+
+        this.scon.socket.on('ice_candidate', async (msg) => {
+           await this.pcon.addIceCandidate(msg.ice);
+        })
 
     }
 
@@ -29,7 +43,40 @@ export default class App {
         $('#callButton').on('click', (e) => {
             this.callUser();
         })
+        this.scon.socket.on('sender_offer', async (msg) => {
+            // console.log(msg);
+            this.pcon.setRemoteDescription(JSON.parse(msg.sender_offer))
+            const answer = await this.pcon.createAnwer();
+            this.pcon.setLocalDescription(answer);
+            // console.log(answer);
+            const url = `${config.serverURL}offer`;
+            $.ajax({
+                type: "POST",
+                url: url,
+                contentType: "application/json",
+                data: JSON.stringify({
+                    'sid': window.sessionStorage.getItem('sid'),
+                    'answer': JSON.stringify(answer),
+                    'reciever_login': 'man',
+                    'type': 'reciever'
+                }),
+                    success: (data) => {
+                        console.log(data);
+                    },
+                });
+            
+        });
 
+        this.scon.socket.on('ice_candidate', async (msg) => {
+            await this.pcon.addIceCandidate(msg.ice);
+        })
+
+        this.pcon.rtcConnection.addEventListener('track', (e) => {
+            console.log('We have got the video!!!');
+            // console.log(e);
+            this.videotag = document.querySelector('#myVideo');
+            this.videotag.srcObject = e.streams[0];
+        })
 
     }
 
@@ -41,7 +88,7 @@ export default class App {
 
     callUser() {
         const url = `${config.serverURL}call`;
-        console.log(url);
+        // console.log(url);
         $.ajax({
             url: url,
             type: "POST",
@@ -51,7 +98,7 @@ export default class App {
             }),
             contentType: "application/json",
             success: (response: any) => {
-                console.log(response);
+                // console.log(response);
             }
         }); 
     }

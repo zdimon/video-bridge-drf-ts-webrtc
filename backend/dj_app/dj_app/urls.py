@@ -21,7 +21,7 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-from main.views import CallView
+from main.views import CallView, OfferView, IceView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -44,6 +44,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('call', CallView.as_view()),
+    path('offer', OfferView.as_view()),
+    path('ice', IceView.as_view()),
 
 
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

@@ -6,7 +6,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from .models import UserProfile, UserConnection
 from django.core.exceptions import ObjectDoesNotExist
-from .tasks import call_task
+from .tasks import call_task, sender_offer_task, sender_answer_task, send_ice_task
+from .serializers.offer import OfferRequestSerializer
+from .serializers.ice import IceRequestSerializer
+from .models import Sdp
 
 import json
 
@@ -48,3 +51,90 @@ class CallView(APIView):
 
         call_task.delay(caller.id, callee.id)
         return Response({'call': 'ok'})
+
+
+class OfferView(APIView):
+    """
+        Get offer from abonent after click Show cam button.
+
+    """
+    permission_classes = (AllowAny,)
+
+    @swagger_auto_schema(
+        request_body=OfferRequestSerializer
+    )
+    def post(self, request, format=None):
+        payload = request.data
+        conn = UserConnection.objects.get(sid=payload['sid'])
+
+        # найдем существующее Sdp или создадим новое
+        if payload['type'] == 'sender':
+            try:
+                offer = Sdp.objects.get(from_user=conn.user)
+            except ObjectDoesNotExist:
+                offer = Sdp()
+        else:
+            # если запрашивает принимающий значит Offer уже должен быть 100%
+            try:
+                offer = Sdp.objects.get(to_user=conn.user)
+            except ObjectDoesNotExist:
+                Response({'status': 1, 'message': f'Sdp does not exist!'})
+
+        # устанавливаем Offer для передающего и уведомляем принимающую сторону
+        if payload['type'] == 'sender':
+            # найдем принимающего по переданному логину
+            try:
+                reciever = UserProfile.objects.get(login=payload['reciever_login'])
+            except ObjectDoesNotExist:
+                Response({'status': 1, 'message': f'Reciever does not exist!'})
+
+            offer.from_user = conn.user
+            offer.from_user_sdp = payload['offer']
+            offer.to_user = reciever
+            # уведомляем принимающую сторону через задачу для celery
+            sender_offer_task(conn.user.id, reciever.id, payload['offer'])
+        # устанавливаем Offer для принимающего
+        else:
+            offer.to_user = conn.user
+            offer.to_user_sdp = payload['answer']
+            sender_answer_task(offer.from_user.id, payload['answer'])
+        offer.save()
+        return Response({'offer': 'ok'})
+        
+
+
+class IceView(APIView):
+    """
+        Get ice candidates.
+
+    """
+    permission_classes = (AllowAny,)
+
+    @swagger_auto_schema(
+        request_body=IceRequestSerializer
+    )
+    def post(self, request, format=None):
+        payload = request.data
+        # поищем соединение
+        try:
+            conn = UserConnection.objects.get(sid=payload['sid'])
+        except ObjectDoesNotExist:
+            return Response({'status': 1, 'message': 'Connection does not exist!'})
+
+        # поищем SDP для передающей стороны
+        try:
+            sdp = Sdp.objects.get(from_user=conn.user)
+            send_ice_task(sdp.to_user.id, payload['ice'])
+        except ObjectDoesNotExist:
+            print('Sdp for sender not found')
+
+        # поищем SDP для принимающей стороны
+        try:
+            sdp = Sdp.objects.get(to_user=conn.user)
+            send_ice_task(sdp.from_user.id, payload['ice'])
+        except ObjectDoesNotExist:
+            print('Sdp for reciever not found')
+
+        # print(sdp)
+
+        return Response({'ice': payload})

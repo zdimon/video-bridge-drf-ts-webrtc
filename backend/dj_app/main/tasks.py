@@ -13,4 +13,37 @@ def call_task(caller_id,callee_id):
     for con in UserConnection.objects.filter(user=callee):
         payload = {"login": caller.login}
         mgr.emit('calling', data=payload, room=con.sid)
+
+
+@task()
+def sender_offer_task(sender_id, reciever_id, sender_offer):
+    reciever = UserProfile.objects.get(pk=reciever_id)
+    sender = UserProfile.objects.get(pk=sender_id)
+    # Находим все соединения по принимающей стороне
+    for conn in UserConnection.objects.filter(user=reciever):
+        # отсылаем сообщения на сокет
+        payload = {"sender_login": sender.login,
+                    "sender_offer": sender_offer}
+        mgr.emit('sender_offer', data=payload, room=conn.sid)
+
+
+@task()
+def sender_answer_task(sender_id, reciever_answer):
+    sender = UserProfile.objects.get(pk=sender_id)
+    # Находим все соединения по принимающей стороне
+    for conn in UserConnection.objects.filter(user=sender):
+        # отсылаем сообщения на сокет
+        payload = {"reciever_answer": reciever_answer}
+        mgr.emit('reciever_answer', data=payload, room=conn.sid)
+
+
+@task()
+def send_ice_task(user_id, ice):
+    sender = UserProfile.objects.get(pk=user_id)
+    # Находим все соединения цели
+    for conn in UserConnection.objects.filter(user=sender):
+        # отсылаем сообщения на сокет
+        payload = {"ice": ice}
+        mgr.emit('ice_candidate', data=payload, room=conn.sid)
+
         
