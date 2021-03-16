@@ -23,3 +23,9 @@
 #recieverLogin {
     display: none;
 }
+
+#callerName {
+    font-size: 24px;
+    font-weight: bold;
+    color: #C30760;
+}
