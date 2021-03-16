@@ -92,7 +92,8 @@ export default class App {
         this.pcon.rtcConnection.addEventListener('track', (e) => {
             console.log('We have got the video!!!');
             // console.log(e);
-            const tpl = `<video autoplay="true" width="200" id="myVideo" ></video>`
+            const tpl = `<video autoplay="true" width="200" id="myVideo" ></video>
+            <div> <a class="btn" id="closeVideo">Close video</a> </div>`
             $('#recieverCam').html(tpl);
             this.videotag = document.querySelector('#myVideo');
             console.log(this.videotag);
