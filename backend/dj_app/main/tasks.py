@@ -28,6 +28,16 @@ def sender_offer_task(sender_id, reciever_id, sender_offer):
 
 
 @task()
+def decline_task(abonent_id):
+    reciever = UserProfile.objects.get(pk=abonent_id)
+    # Находим все соединения по принимающей стороне
+    for conn in UserConnection.objects.filter(user=reciever):
+        # отсылаем сообщения на сокет
+        payload = {"decline": "no"}
+        mgr.emit('decline', data=payload, room=conn.sid)
+
+
+@task()
 def sender_answer_task(sender_id, reciever_answer):
     sender = UserProfile.objects.get(pk=sender_id)
     # Находим все соединения по принимающей стороне

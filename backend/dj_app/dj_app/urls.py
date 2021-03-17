@@ -21,7 +21,7 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-from main.views import CallView, OfferView, IceView
+from main.views import CallView, OfferView, IceView, DeclineView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -29,6 +29,8 @@ schema_view = get_schema_view(
         default_version='v1',
         description=''' Documentation
         The `ReDoc` view can be found [here](/doc).
+        The [sender page](/sender).
+        The [reciever page](/reciever).
         ''',
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="zdimon77@gmail.com"),
@@ -44,6 +46,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('call', CallView.as_view()),
+    path('decline', DeclineView.as_view()),
     path('offer', OfferView.as_view()),
     path('ice', IceView.as_view()),
 

@@ -19,7 +19,7 @@ export default class App {
         this.scon = new SocketConnection();
         this.scon.connect(username);
         this.pcon = new PeerConnection();
-        this.stream = await this.pcon.getmedia();
+        
                
 
 
@@ -42,9 +42,27 @@ export default class App {
                 </div>
             </div>`;
             $('#senderCam').html(tpl);
-            $('#acceptOffer').on('click', (e) => {
+            $('#acceptOffer').on('click', async (e) => {
+                this.stream = await this.pcon.getmedia();
                 this.attachVideo();
                 this.pcon.offer(this.tracks,this.stream);
+            })  
+            $('#declineOffer').on('click', async (e) => {
+                
+                const url = `${config.serverURL}decline`;
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        'sid': window.sessionStorage.getItem('sid'),
+                        'reciever_login': $('#recieverLogin').val()
+                    }),
+                        success: (data) => {
+                            console.log(data);
+                            $('#senderCam').html('');
+                        },
+                    });
             })  
         });
 
@@ -61,8 +79,13 @@ export default class App {
         $('#VideoCall').on('click', (e) => {
             this.callUser();
         })
+
+        this.scon.socket.on('decline', async (msg) => {
+            $('#VideoCall').html('Abonent rejected the call!');
+        });
         this.scon.socket.on('sender_offer', async (msg) => {
             // console.log(msg);
+            $('#VideoCall').html('Abonent accepted the call...');
             this.pcon.setRemoteDescription(JSON.parse(msg.sender_offer))
             const answer = await this.pcon.createAnwer();
             this.pcon.setLocalDescription(answer);
@@ -91,6 +114,7 @@ export default class App {
 
         this.pcon.rtcConnection.addEventListener('track', (e) => {
             console.log('We have got the video!!!');
+            $('#VideoCall').hide();
             // console.log(e);
             const tpl = `<video autoplay="true" width="200" id="myVideo" ></video>
             <div> <a class="btn" id="closeVideo">Close video</a> </div>`
@@ -99,6 +123,9 @@ export default class App {
             console.log(this.videotag);
             console.log(e.streams);
             this.videotag.srcObject = e.streams[0];
+            $('#closeVideo').on('click', () => {
+                $('#recieverCam').html('');
+            })
         })
 
     }
@@ -112,7 +139,7 @@ export default class App {
     callUser() {
         const url = `${config.serverURL}call`;
         const username =  $('#VideoCall').attr( "data-username" );
-        // console.log(url);
+        
         $.ajax({
             url: url,
             type: "POST",
@@ -122,7 +149,8 @@ export default class App {
             }),
             contentType: "application/json",
             success: (response: any) => {
-                // console.log(response);
+                console.log(response);
+                $('#VideoCall').html(response.message);
             }
         }); 
     }

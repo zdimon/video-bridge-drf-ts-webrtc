@@ -6,9 +6,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from .models import UserProfile, UserConnection
 from django.core.exceptions import ObjectDoesNotExist
-from .tasks import call_task, sender_offer_task, sender_answer_task, send_ice_task
+from .tasks import call_task, sender_offer_task, sender_answer_task, send_ice_task, decline_task
 from .serializers.offer import OfferRequestSerializer
 from .serializers.ice import IceRequestSerializer
+from .serializers.declineRequestSerializer import declineRequestSerializer
 from .models import Sdp
 
 import json
@@ -40,7 +41,7 @@ class CallView(APIView):
             callee = UserProfile.objects.get(login=data['login'])
             print(callee)
         except ObjectDoesNotExist:
-            return Response({'status': 1, 'message': 'User does not connected!'})
+            return Response({'status': 1, 'message': 'User is not connected!'})
 
         try:
             conn = UserConnection.objects.get(sid=data['sid'])
@@ -50,7 +51,7 @@ class CallView(APIView):
             return Response({'status': 1, 'message': 'You are not connected!'})
 
         call_task.delay(caller.id, callee.id)
-        return Response({'call': 'ok'})
+        return Response({'status': 0, 'message': 'We are calling...'})
 
 
 class OfferView(APIView):
@@ -138,3 +139,23 @@ class IceView(APIView):
         # print(sdp)
 
         return Response({'ice': payload})
+
+class DeclineView(APIView):
+    """
+        Decline the call.
+
+    """
+    permission_classes = (AllowAny,)
+
+    @swagger_auto_schema(
+        request_body=declineRequestSerializer
+    )
+    def post(self, request, format=None):
+        payload = request.data
+        try:
+            reciever = UserProfile.objects.get(login=payload['reciever_login'])
+            print(reciever)
+            decline_task.delay(reciever.id)
+        except ObjectDoesNotExist:
+            return Response({'status': 1, 'message': 'User is not connected!'})
+        return Response({'message': 'ok'})
