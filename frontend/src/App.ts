@@ -81,7 +81,7 @@ export default class App {
         })
 
         this.scon.socket.on('decline', async (msg) => {
-            $('#VideoCall').html('Abonent rejected the call!');
+            $('#VideoCall').html('Rejected!');
         });
         this.scon.socket.on('sender_offer', async (msg) => {
             // console.log(msg);
