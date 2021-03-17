@@ -4,7 +4,7 @@ from main.models import UserProfile, UserConnection, Sdp
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ['login', 'is_online']
+    list_display = ['login', 'status']
 
 
 @admin.register(UserConnection)

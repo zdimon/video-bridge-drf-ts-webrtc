@@ -5,6 +5,7 @@ from django.utils.translation import gettext as _
 class UserProfile(models.Model):
     login = models.CharField(max_length=80,unique=True, verbose_name=_('Name'))
     is_online = models.BooleanField(default=False)
+    status = models.CharField(max_length=15, verbose_name=_('Status'), default='free')
     def __str__(self) -> str:
         return self.login
 

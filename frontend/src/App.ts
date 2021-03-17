@@ -39,13 +39,39 @@ export default class App {
                 <div style="text-align: center">              
                 <a class="btn" id="acceptOffer">Accept</a>
                 <a class="btn" id="declineOffer">Decline</a>
+                <a class="btn" style="display:none" id="stopVideo">Stop video</a>
                 </div>
             </div>`;
             $('#senderCam').html(tpl);
+
+            $('#stopVideo').on('click', (e) => {
+                $('#senderCam').html('');
+                const tracks = this.stream.getTracks();
+                tracks.forEach(function(track) {
+                    track.stop();
+                });
+            })
+
             $('#acceptOffer').on('click', async (e) => {
+                $('#acceptOffer').hide();
+                $('#declineOffer').hide();
+                $('#stopVideo').show();
                 this.stream = await this.pcon.getmedia();
                 this.attachVideo();
                 this.pcon.offer(this.tracks,this.stream);
+                const url = `${config.serverURL}status`;
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    contentType: "application/json",
+                    data: JSON.stringify({
+                        'sid': window.sessionStorage.getItem('sid'),
+                        'status':'beasy'
+                    }),
+                        success: (data) => {
+
+                        },
+                });
             })  
             $('#declineOffer').on('click', async (e) => {
                 
@@ -62,7 +88,7 @@ export default class App {
                             console.log(data);
                             $('#senderCam').html('');
                         },
-                    });
+                });
             })  
         });
 
@@ -149,8 +175,12 @@ export default class App {
             }),
             contentType: "application/json",
             success: (response: any) => {
-                console.log(response);
-                $('#VideoCall').html(response.message);
+                if(response.status === 0) {
+                    $('#VideoCall').html(response.message);
+                } else {
+                    alert(response.message);
+                }
+                
             }
         }); 
     }

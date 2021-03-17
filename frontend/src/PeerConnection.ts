@@ -5,6 +5,7 @@ import { config } from './config';
 export class PeerConnection {
 
     rtcConnection: any;
+    sender: any;
 
     constructor() {
         this.rtcConnection = new RTCPeerConnection(
@@ -48,6 +49,7 @@ export class PeerConnection {
         this.rtcConnection.setLocalDescription(offer);
     }
 
+
     async createAnwer(){
         return await this.rtcConnection.createAnswer();
     }
@@ -77,7 +79,7 @@ export class PeerConnection {
         };
 
         
-        tracks.forEach((track) => this.rtcConnection.addTrack(track,localStream) );
+        tracks.forEach((track) => this.sender = this.rtcConnection.addTrack(track,localStream) );
         console.log('Creating offer!');
         const offer = await this.rtcConnection.createOffer(offerOptions);
         await this.rtcConnection.setLocalDescription(offer);

@@ -10,6 +10,7 @@ from .tasks import call_task, sender_offer_task, sender_answer_task, send_ice_ta
 from .serializers.offer import OfferRequestSerializer
 from .serializers.ice import IceRequestSerializer
 from .serializers.declineRequestSerializer import declineRequestSerializer
+from .serializers.statusRequestSerializer import StatusRequestSerializer
 from .models import Sdp
 
 import json
@@ -39,7 +40,8 @@ class CallView(APIView):
 
         try:
             callee = UserProfile.objects.get(login=data['login'])
-            print(callee)
+            if(callee.status=='beasy'):
+                return Response({'status': 1, 'message': 'User is beasy now!'})
         except ObjectDoesNotExist:
             return Response({'status': 1, 'message': 'User is not connected!'})
 
@@ -158,4 +160,26 @@ class DeclineView(APIView):
             decline_task.delay(reciever.id)
         except ObjectDoesNotExist:
             return Response({'status': 1, 'message': 'User is not connected!'})
+        return Response({'message': 'ok'})
+
+class StatusView(APIView):
+    """
+        Set status.
+
+    """
+    permission_classes = (AllowAny,)
+
+    @swagger_auto_schema(
+        request_body=StatusRequestSerializer
+    )
+    def post(self, request, format=None):
+        payload = request.data
+        try:
+            conn = UserConnection.objects.get(sid=payload['sid'])
+            reciever = conn.user
+            reciever.status = payload['status']
+            reciever.save()
+        except ObjectDoesNotExist:
+            return Response({'status': 1, 'message': 'Connection does not exist!'})
+
         return Response({'message': 'ok'})
