@@ -111,6 +111,8 @@ export default class App {
         });
         this.scon.socket.on('sender_offer', async (msg) => {
             // console.log(msg);
+            
+            $('#recieverCam').show();
             $('#VideoCall').html('Abonent accepted the call...');
             this.pcon.setRemoteDescription(JSON.parse(msg.sender_offer))
             const answer = await this.pcon.createAnwer();
@@ -142,15 +144,19 @@ export default class App {
             console.log('We have got the video!!!');
             $('#VideoCall').hide();
             // console.log(e);
-            const tpl = `<video autoplay="true" width="200" id="myVideo" ></video>
+            const tpl = `
+            <div id="videoDrag">Click here to move</div>
+            <video autoplay="true" id="myVideo" ></video>
             <div> <a class="btn" id="closeVideo">Close video</a> </div>`
             $('#recieverCam').html(tpl);
+            this.dragElement();
             this.videotag = document.querySelector('#myVideo');
             console.log(this.videotag);
             console.log(e.streams);
             this.videotag.srcObject = e.streams[0];
             $('#closeVideo').on('click', () => {
                 $('#recieverCam').html('');
+                $('#recieverCam').hide();
             })
         })
 
@@ -184,6 +190,45 @@ export default class App {
             }
         }); 
     }
+
+    dragElement() {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        var elmnt = document.getElementById("videoDrag");
+        var drgel = document.getElementById("recieverCam");
+        elmnt.onmousedown = dragMouseDown;
+        
+      
+        function dragMouseDown(e) {
+          e = e || window.event;
+          e.preventDefault();
+          // get the mouse cursor position at startup:
+          pos3 = e.clientX;
+          pos4 = e.clientY;
+          console.log(e.clientX);
+          document.onmouseup = closeDragElement;
+          // call a function whenever the cursor moves:
+          document.onmousemove = elementDrag;
+        }
+      
+        function elementDrag(e) {
+          e = e || window.event;
+          e.preventDefault();
+          // calculate the new cursor position:
+          pos1 = pos3 - e.clientX;
+          pos2 = pos4 - e.clientY;
+          pos3 = e.clientX;
+          pos4 = e.clientY;
+          // set the element's new position:
+          drgel.style.top = (drgel.offsetTop - pos2) + "px";
+          drgel.style.left = (drgel.offsetLeft - pos1) + "px";
+        }
+      
+        function closeDragElement() {
+          // stop moving when mouse button is released:
+          document.onmouseup = null;
+          document.onmousemove = null;
+        }
+      }
 
 
 }

@@ -1,20 +1,28 @@
 #recieverCam {
     position: absolute;
     top: 10px;
-    height: 220px;
     background-color:white;
     border-radius: 10px;
-    z-index: 100;
+    z-index: 9;
     text-align: center;
-   
+    border: 1px solid #C30760;
+    padding: 10px;
+    display: none;
+}
+
+#videoDrag {
+    background-color: #f1f1f1;
+    border: 1px solid #d3d3d3;
+    text-align: center;
+    height: 30px;
+    cursor: move;
+    padding-top: 5px;
 }
 
 
-
-
 #myVideo {
-    width: 200px;
-    height: 150px;
+    width: 400px;
+    height: 300px;
 }
 
 #senderCam {
