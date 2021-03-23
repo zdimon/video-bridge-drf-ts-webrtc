@@ -20,7 +20,9 @@ export default class App {
         this.scon.connect(username);
         this.pcon = new PeerConnection();
         
-               
+        this.scon.socket.on('refresh', (msg) => {
+            document.location.reload();
+        });
 
 
         this.scon.socket.on('reciever_answer', async (msg) => {
@@ -46,11 +48,24 @@ export default class App {
             $('#senderCam').show();
 
             $('#stopVideo').on('click', (e) => {
-                $('#senderCam').html('');
+                
                 const tracks = this.stream.getTracks();
                 tracks.forEach(function(track) {
                     track.stop();
                 });
+                const url = `${config.serverURL}refresh`;
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: JSON.stringify({
+                        login: $('#recieverLogin').val()
+                    }),
+                    contentType: "application/json",
+                    success: (response: any) => {
+                        $('#senderCam').html('');
+                        
+                    }
+                }); 
             })
 
             $('#acceptOffer').on('click', async (e) => {
@@ -109,6 +124,10 @@ export default class App {
             this.callUser();
         })
 
+        this.scon.socket.on('refresh', (msg) => {
+            document.location.reload();
+        });
+
         this.scon.socket.on('decline', async (msg) => {
             $('#VideoCall').html('Rejected!');
         });
@@ -161,6 +180,19 @@ export default class App {
                 $('#recieverCam').hide();
                 $('#VideoCall').html('Webcam');
                 $('#VideoCall').show();
+                const url = `${config.serverURL}refresh`;
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: JSON.stringify({
+                        login: $('#VideoCall').attr( "data-username" )
+                    }),
+                    contentType: "application/json",
+                    success: (response: any) => {
+                        console.log(response);
+                        
+                    }
+                }); 
             })
         })
 

@@ -57,3 +57,11 @@ def send_ice_task(user_id, ice):
         mgr.emit('ice_candidate', data=payload, room=conn.sid)
 
         
+@task()
+def send_refresh_task(user_id):
+    target = UserProfile.objects.get(pk=user_id)
+    # Находим все соединения цели
+    for conn in UserConnection.objects.filter(user=target):
+        # отсылаем сообщения на сокет
+        payload = {"refresh": 'gogo'}
+        mgr.emit('refresh', data=payload, room=conn.sid)

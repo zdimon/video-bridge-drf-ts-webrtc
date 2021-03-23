@@ -6,11 +6,12 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from .models import UserProfile, UserConnection
 from django.core.exceptions import ObjectDoesNotExist
-from .tasks import call_task, sender_offer_task, sender_answer_task, send_ice_task, decline_task
+from .tasks import call_task, sender_offer_task, sender_answer_task, send_ice_task, decline_task, send_refresh_task
 from .serializers.offer import OfferRequestSerializer
 from .serializers.ice import IceRequestSerializer
 from .serializers.declineRequestSerializer import declineRequestSerializer
 from .serializers.statusRequestSerializer import StatusRequestSerializer
+from .serializers.refreshRequestSerializer import RefreshRequestSerializer
 from .models import Sdp
 
 import json
@@ -181,5 +182,26 @@ class StatusView(APIView):
             reciever.save()
         except ObjectDoesNotExist:
             return Response({'status': 1, 'message': 'Connection does not exist!'})
+
+        return Response({'message': 'ok'})
+
+
+class RefreshPageView(APIView):
+    """
+       Refresh abonent page.
+
+    """
+    permission_classes = (AllowAny,)
+
+    @swagger_auto_schema(
+        request_body=RefreshRequestSerializer
+    )
+    def post(self, request, format=None):
+        payload = request.data
+        try:
+            user = UserProfile.objects.get(login=payload['login'])
+            send_refresh_task.delay(user.id)
+        except ObjectDoesNotExist:
+            return Response({'status': 1, 'message': 'User does not exist!'})
 
         return Response({'message': 'ok'})
