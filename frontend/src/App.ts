@@ -43,6 +43,7 @@ export default class App {
                 </div>
             </div>`;
             $('#senderCam').html(tpl);
+            $('#senderCam').show();
 
             $('#stopVideo').on('click', (e) => {
                 $('#senderCam').html('');
@@ -56,6 +57,8 @@ export default class App {
                 $('#acceptOffer').hide();
                 $('#declineOffer').hide();
                 $('#stopVideo').show();
+                $('#callerName').html('Click here to move');
+                this.dragElement('callerName','senderCam');
                 this.stream = await this.pcon.getmedia();
                 this.attachVideo();
                 this.pcon.offer(this.tracks,this.stream);
@@ -113,7 +116,6 @@ export default class App {
             // console.log(msg);
             
             $('#recieverCam').show();
-            $('#VideoCall').html('Abonent accepted the call...');
             this.pcon.setRemoteDescription(JSON.parse(msg.sender_offer))
             const answer = await this.pcon.createAnwer();
             this.pcon.setLocalDescription(answer);
@@ -149,7 +151,7 @@ export default class App {
             <video autoplay="true" id="myVideo" ></video>
             <div> <a class="btn" id="closeVideo">Close video</a> </div>`
             $('#recieverCam').html(tpl);
-            this.dragElement();
+            this.dragElement('videoDrag','recieverCam');
             this.videotag = document.querySelector('#myVideo');
             console.log(this.videotag);
             console.log(e.streams);
@@ -157,6 +159,7 @@ export default class App {
             $('#closeVideo').on('click', () => {
                 $('#recieverCam').html('');
                 $('#recieverCam').hide();
+                $('#VideoCall').show();
             })
         })
 
@@ -191,10 +194,10 @@ export default class App {
         }); 
     }
 
-    dragElement() {
+    dragElement(elid: string, drid: string) {
         var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-        var elmnt = document.getElementById("videoDrag");
-        var drgel = document.getElementById("recieverCam");
+        var elmnt = document.getElementById(elid);
+        var drgel = document.getElementById(drid);
         elmnt.onmousedown = dragMouseDown;
         
       
