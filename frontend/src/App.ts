@@ -159,6 +159,7 @@ export default class App {
             $('#closeVideo').on('click', () => {
                 $('#recieverCam').html('');
                 $('#recieverCam').hide();
+                $('#VideoCall').html('Webcam');
                 $('#VideoCall').show();
             })
         })
