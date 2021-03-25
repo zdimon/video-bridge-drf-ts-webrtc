@@ -56,7 +56,7 @@ export class PeerConnection {
 
     async getmedia(): Promise<any>  {
         const constraints = {
-            audio: false,
+            audio: true,
             video: true
         };
         try {
