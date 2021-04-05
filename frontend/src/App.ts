@@ -64,6 +64,7 @@ export default class App {
                     success: (response: any) => {
                         $('#senderCam').html('');
                         $('#senderCam').hide();
+						document.location.reload();
                         
                     }
                 }); 
