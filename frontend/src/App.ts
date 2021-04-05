@@ -65,7 +65,7 @@ export default class App {
                         $('#senderCam').html('');
                         $('#senderCam').hide();
 						document.location.reload();
-                        
+                        console.log('Reloading page!!!');
                     }
                 }); 
             })
