@@ -63,6 +63,7 @@ export default class App {
                     contentType: "application/json",
                     success: (response: any) => {
                         $('#senderCam').html('');
+                        $('#senderCam').hide();
                         
                     }
                 }); 
