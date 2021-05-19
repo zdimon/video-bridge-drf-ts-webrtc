@@ -122,6 +122,7 @@ export default class App {
         this.scon = new SocketConnection();
         this.scon.connect(username);
         this.pcon = new PeerConnection();
+        console.log('Init sender app');
         $('#VideoCall').on('click', (e) => {
             this.callUser();
         })
