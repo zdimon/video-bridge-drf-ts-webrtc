@@ -23,6 +23,7 @@ def add_user_task(sid,data):
     con.user = user
     con.sid = sid
     con.save()
+    UserConnection.check_online(user)
 
 
 def remove_connection_task(sid):

@@ -127,6 +127,25 @@ export default class App {
             this.callUser();
         })
 
+        // check online
+        const url = `${config.serverURL}online`;
+        $.ajax({
+            type: "GET",    
+            url: url,
+            contentType: "application/json",
+                success: (data) => {
+                    data.payload.forEach(element => {
+                        var btn = $('#VideoCall');
+                        console.log(btn.attr('data-username'));
+                        if(btn.attr('data-username') === element) {
+                            btn.show(); 
+                        }
+                        
+                    });
+                    
+                },
+            });
+
         this.scon.socket.on('refresh', (msg) => {
             document.location.reload();
         });

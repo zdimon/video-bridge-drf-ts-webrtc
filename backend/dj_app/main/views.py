@@ -24,6 +24,18 @@ def reciever(request):
     return render(request,'reciever.html')
 
 
+class OnlineView(APIView):
+    """
+        Online user list.
+
+    """
+    permission_classes = (AllowAny,)
+    def get(self, request, format=None):
+        users = UserProfile.objects.filter(is_online=True)
+        out = []
+        for u in users:
+            out.append(u.login)
+        return Response({'status': 0, 'payload': out})
 
 
 class CallView(APIView):

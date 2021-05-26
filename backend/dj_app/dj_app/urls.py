@@ -21,7 +21,7 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-from main.views import CallView, OfferView, IceView, DeclineView, StatusView, RefreshPageView
+from main.views import CallView, OfferView, IceView, DeclineView, StatusView, RefreshPageView, OnlineView
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -45,6 +45,7 @@ urlpatterns = [
     path('reciever', reciever),
     path('admin/', admin.site.urls),
 
+    path('online', OnlineView.as_view()),
     path('call', CallView.as_view()),
     path('decline', DeclineView.as_view()),
     path('offer', OfferView.as_view()),
