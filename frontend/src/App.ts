@@ -138,7 +138,7 @@ export default class App {
                         var btn = $('#VideoCall');
                         console.log(btn.attr('data-username'));
                         if(btn.attr('data-username') === element) {
-                            btn.show(); 
+                            btn.html('<span>Webcam</span>'); 
                         }
                         
                     });
