@@ -139,7 +139,7 @@ export default class App {
                         console.log(btn.attr('data-username'));
                         if(btn.attr('data-username') === element) {
                             btn.html('<span>Webcam</span>'); 
-                        }
+                        } 
                         
                     });
                     
