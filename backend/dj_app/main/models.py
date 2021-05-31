@@ -13,6 +13,16 @@ class UserConnection(models.Model):
     sid = models.CharField(max_length=250,unique=True, verbose_name=_('SID'))
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
+    @staticmethod
+    def check_online(user):
+        cnt = UserConnection.objects.filter(user=user).count()
+        if cnt == 0:
+            user.is_online = False
+        else:
+            user.is_online = True
+        user.save()
+
+
 
 class Sdp(models.Model):
     from_user = models.ForeignKey(UserProfile, 
