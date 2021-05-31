@@ -72,10 +72,10 @@ export class PeerConnection {
     async offer(tracks: any, localStream: any) {
 
         const offerOptions = {
-            offerToReceiveAudio: 0,
+            offerToReceiveAudio: 1,
             offerToReceiveVideo: 1,
             iceRestart: 1,
-            voiceActivityDetection: 0
+            voiceActivityDetection: 1
         };
 
         
