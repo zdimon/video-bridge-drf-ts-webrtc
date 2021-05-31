@@ -224,6 +224,7 @@ export default class App {
     attachVideo() {
         this.videotag = document.querySelector('#myVideo');
         this.tracks = this.stream.getVideoTracks();
+        this.stream.getAudioTracks()[0].enabled = true;
         this.videotag.srcObject = this.stream;
     }
 
