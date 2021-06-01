@@ -75,7 +75,7 @@ export class PeerConnection {
             offerToReceiveAudio: 1,
             offerToReceiveVideo: 1,
             iceRestart: 1,
-            voiceActivityDetection: 1
+            voiceActivityDetection: 0
         };
 
         
