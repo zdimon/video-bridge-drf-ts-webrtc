@@ -3,7 +3,7 @@ ovapp = {
     DOMAIN: 'video.ecstasy.pl',
     OPENVIDU_SERVER_URL: `https://video.ecstasy.pl:4443`,
     OPENVIDU_SERVER_SECRET: 'MY_SECRET',
-    SOCKET_URL: `https://video.ecstasy.pl:5001`,
+    SOCKET_URL: `http://video.ecstasy.pl:5001`,
     SERVER_URL: `https://video.ecstasy.pl`,
     USERNAME: '',
 
