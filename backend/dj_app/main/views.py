@@ -24,6 +24,13 @@ def reciever(request):
     return render(request,'reciever.html')
 
 
+def osender(request):
+    return render(request,'osender.html')
+
+def oreciever(request):
+    return render(request,'oreciever.html')
+
+
 class OnlineView(APIView):
     """
         Online user list.

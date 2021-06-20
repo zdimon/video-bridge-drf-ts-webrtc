@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Openvidu reciever</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="/static/openvidu.js"></script>
+        <script src="/static/socket.io.min.js"></script>
+        <link rel="stylesheet" href="/static/video.css">
+    </head>
+    <body>
+        <h1>Openvidu Reciever page</h1>
+        <div id="recieverCam"></div>
+        <button id="VideoCall" data-username="woman">Video call</button>
+        <script src="/static/ov/app.js"></script>
+        <script>
+            window.ovapp.initappReciever('man');
+        </script>
+    </body>
+</html>

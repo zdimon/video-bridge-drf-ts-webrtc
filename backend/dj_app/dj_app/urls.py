@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from main.views import sender, reciever
+from main.views import sender, reciever, osender, oreciever
 
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
@@ -31,6 +31,8 @@ schema_view = get_schema_view(
         The `ReDoc` view can be found [here](/doc).
         The [sender page](/sender).
         The [reciever page](/reciever).
+        The [openvidu sender page](/osender).
+        The [openvidu reciever page](/oreciever).
         ''',
         terms_of_service="https://www.google.com/policies/terms/",
         contact=openapi.Contact(email="zdimon77@gmail.com"),
@@ -43,6 +45,9 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('sender', sender),
     path('reciever', reciever),
+    path('osender', osender),
+    path('oreciever', oreciever),
+
     path('admin/', admin.site.urls),
 
     path('online', OnlineView.as_view()),
