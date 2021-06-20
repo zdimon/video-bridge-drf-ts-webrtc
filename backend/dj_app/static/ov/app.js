@@ -1,8 +1,10 @@
 var ovapp = {
-    OPENVIDU_SERVER_URL: 'https://localhost:4443',
+    // DOMAIN = 'localhost',
+    DOMAIN = 'video.ecstasy.pl',
+    OPENVIDU_SERVER_URL: `https://${this.DOMAIN}:4443`,
     OPENVIDU_SERVER_SECRET: 'MY_SECRET',
-    SOCKET_URL: 'http://localhost:5001',
-    SERVER_URL: 'http://localhost:8000',
+    SOCKET_URL: `http://${this.DOMAIN}:5001`,
+    SERVER_URL: `http://${this.DOMAIN}:8000`,
     USERNAME: '',
 
     initappReciever: function(username){
