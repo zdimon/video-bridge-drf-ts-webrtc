@@ -1,11 +1,16 @@
 ovapp = {
-    // DOMAIN: 'localhost',
-    DOMAIN: 'video.ecstasy.pl',
+
+    // OPENVIDU_SERVER_URL: `https://localhost:4443`,
+    // SOCKET_URL: `http://localhost:5001`,
+    // SERVER_URL: `http://localhost:8001`,
+
+
     OPENVIDU_SERVER_URL: `https://video.ecstasy.pl`,
-    OPENVIDU_SERVER_SECRET: 'slavae',
     SOCKET_URL: `https://video.ecstasy.pl`,
     SERVER_URL: `https://video.ecstasy.pl`,
+
     USERNAME: '',
+    OPENVIDU_SERVER_SECRET: 'slavae',
 
     initappReciever: function(username){
         console.log('Init reciever app');
@@ -31,10 +36,31 @@ ovapp = {
                                 this.getToken(user).then(function(token) {
                                     session.connect(token, { })   
                                     session.on('streamCreated', event => {
-                                        console.log('!!!!!!!!!!!!!!!!!!!!!!');
+                                        
                                         $('#recieverCam').show();
                                         var subscriber = session.subscribe(event.stream, 'recieverCam');
-                            
+
+                                        var tpl = `<p><a class="btn" id="closeVideo">Close video</a> </p>`
+                                        $('#recieverCam').append(tpl);
+                                        $('#closeVideo').on('click', () => {
+                                            $('#recieverCam').html('');
+                                            $('#recieverCam').hide();
+                                            $('#VideoCall').html('Webcam');
+                                            $('#VideoCall').show();
+                                            const url = `${this.SERVER_URL}/refresh`;
+                                            $.ajax({
+                                                url: url,
+                                                type: "POST",
+                                                data: JSON.stringify({
+                                                    login: $('#VideoCall').attr( "data-username" )
+                                                }),
+                                                contentType: "application/json",
+                                                success: (response) => {
+                                                    console.log(response);
+                                                    
+                                                }
+                                            }); 
+                                        })
                                     });
                                 });
                     
@@ -105,6 +131,28 @@ ovapp = {
             </div>`;
             $('#senderCam').html(tpl);
             $('#senderCam').show();
+            
+
+            $('#stopVideo').on('click', (e) => {
+                
+               
+                const url = `${this.SERVER_URL}/refresh`;
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    data: JSON.stringify({
+                        login: $('#recieverLogin').val()
+                    }),
+                    contentType: "application/json",
+                    success: (response) => {
+                        $('#senderCam').html('');
+                        $('#senderCam').hide();
+						document.location.reload();
+                        console.log('Reloading page!!!');
+                    }
+                }); 
+            })
+
             $('#declineOffer').on('click', async (e) => {
                 const url = `${this.SERVER_URL}/decline`;
                 $.ajax({
@@ -152,7 +200,7 @@ ovapp = {
                         
                     })
                 });
-                this.dragElement('videoDrag','recieverCam');
+                this.dragElement('responseBox','senderCam');
                 // this.dragElement('callerName','senderCam');
                 // this.stream = await this.pcon.getmedia();
                 // this.attachVideo();
@@ -238,7 +286,7 @@ ovapp = {
         var elmnt = document.getElementById(elid);
         var drgel = document.getElementById(drid);
         elmnt.onmousedown = dragMouseDown;
-        
+        console.log('dragggggg');
       
         function dragMouseDown(e) {
           e = e || window.event;

@@ -19,7 +19,18 @@
     border: 1px solid #C30760;
     padding: 10px;
     display: none;
+    
 }
+
+#senderCam video {
+    width: 500px;
+}
+
+#recieverCam video {
+    width: 500px;
+}
+
+
 
 #videoDrag {
     background-color: #f1f1f1;

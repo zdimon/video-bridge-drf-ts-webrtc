@@ -1,0 +1,2 @@
+cd backend
+docker run -p 4443:4443 --rm -e OPENVIDU_SECRET=slavae openvidu/openvidu-server-kms:2.18.0
