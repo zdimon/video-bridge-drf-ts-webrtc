@@ -61,6 +61,8 @@ class CallView(APIView):
         try:
             callee = UserProfile.objects.get(login=data['login'])
             if(callee.status=='beasy'):
+                callee.status == 'free'
+                callee.save()
                 return Response({'status': 1, 'message': 'User is beasy now!'})
         except ObjectDoesNotExist:
             return Response({'status': 1, 'message': 'User is not connected!'})
