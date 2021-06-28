@@ -30,7 +30,7 @@
     width: 500px;
 }
 
-@media(min-width: 576px){
+@media(max-width: 576px){
     #senderCam video {
         width: 300px;
     }
