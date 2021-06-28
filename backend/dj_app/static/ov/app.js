@@ -83,7 +83,10 @@ ovapp = {
             console.log('Connection was established');
             window.sessionStorage.setItem('sid',socket.id);
             socket.emit('login',{login});
-        })            
+        });
+        socket.on('refresh', (msg) => {
+            document.location.reload();
+        });            
     },
 
     callUser: function() {
