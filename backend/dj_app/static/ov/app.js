@@ -36,7 +36,7 @@ ovapp = {
                                 this.getToken(user).then(function(token) {
                                     session.connect(token, { })   
                                     session.on('streamCreated', event => {
-                                        
+                                        $('#recieverCam').empty();
                                         $('#recieverCam').show();
                                         var subscriber = session.subscribe(event.stream, 'recieverCam');
 
